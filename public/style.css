@@ -1,0 +1,88 @@
+/* --- General Body Styling --- */
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #fef5f5; /* Light pink background */
+    margin: 0;
+    padding: 0;
+    padding-bottom: 60px; /* Space for the fixed footer */
+}
+
+/* --- Header Styling --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f7a0a0; /* Header pink */
+    border-bottom: 2px solid #e68080; /* Darker pink border */
+    padding: 10px 20px;
+}
+
+.logo-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header img {
+    height: 50px; /* Adjust logo size */
+}
+
+/* --- Footer Styling --- */
+footer {
+    background-color: #f7a0a0; /* Same as header */
+    border-top: 2px solid #e68080;
+    text-align: center;
+    padding: 20px;
+    
+    /* This makes the footer stick to the bottom */
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* --- Home Page Specifics --- */
+.home-container {
+    text-align: center;
+    padding: 40px;
+}
+
+.home-container h2 {
+    font-size: 36px;
+    color: #555;
+    margin-bottom: 40px;
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Space between cards */
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    
+    /* Sizing */
+    width: 200px;
+    height: 150px;
+    
+    /* Center text inside */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Link styling */
+    text-decoration: none;
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+    
+    /* Smooth transition */
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    /* Make cards pop on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(255, 0, 0, 0.441);
+}
