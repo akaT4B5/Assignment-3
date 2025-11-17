@@ -8,40 +8,58 @@
         <a href="/sessions/add" class="card" id="add-session-btn">
             Add Session
         </a>
-    </div>
 
+        <a href="/" class="btn-back-home">
+            &larr; Back to Home
+        </a>
+    </div>
     <div class="sessions-right-column">
         
         <div class="scrollable-table-container">
             <table class="session-table">
                 <thead>
                     <tr>
-                        <th>Exercise</th>
-                        <th>Reps</th>
-                        <th>Weight (lbs)</th>
                         <th>Date</th>
-                        <th>Actions</th>
+                        <th>Focus</th>
+                        <th>View Details</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% if (workouts.length > 0) { %>
-                        <% workouts.forEach(workout => { %>
+                    <% if (sessions.length > 0) { %>
+                        <% sessions.forEach(session => { %>
                             <tr>
-                                <td><%= workout.exerciseName %></td>
-                                <td><%= workout.reps %></td>
-                                <td><%= workout.weight %></td>
-                                <td><%= new Date(workout.date).toLocaleDateString() %></td>
+                                <td><%= new Date(session.date).toLocaleDateString() %></td>
+                                <td><strong><%= session.focus %></strong></td>
                                 <td>
-                                    <a href="/sessions/edit/<%= workout._id %>" class="btn-edit">Edit</a>
-                                    <a href="/sessions/delete/<%= workout._id %>" classm="btn-delete">Delete</a>
+                                    <details>
+                                        <summary style="cursor: pointer; color: #007bff;">Show Workout</summary>
+                                        <ul style="text-align: left; margin-top: 10px; font-size: 0.9em;">
+                                            <% session.exercises.forEach(ex => { %>
+                                                <li style="margin-bottom: 5px;">
+                                                    <strong><%= ex.name %>:</strong>
+                                                    <% if(ex.type === 'strength') { %>
+                                                        <%= ex.sets %> x <%= ex.reps %> @ <%= ex.weight %>lbs
+                                                    <% } else { %>
+                                                        <%= ex.distance %>m in <%= ex.duration %> mins
+                                                    <% } %>
+                                                </li>
+                                            <% }) %>
+                                        </ul>
+                                        <div style="margin-top: 10px;">
+                                            <a href="/sessions/delete/<%= session._id %>" class="btn-delete" onclick="return confirm('Delete this entire session?')">Delete Session</a>
+                                        </div>
+                                    </details>
                                 </td>
                             </tr>
                         <% }) %>
                     <% } else { %>
                         <tr>
-                            <td colspan="5">No workout sessions found. Add one!</td>
+                            <td colspan="3">No sessions logged yet.</td>
                         </tr>
                     <% } %>
                 </tbody>
             </table>
-        </div> </div> </div> <%- include('../partials/footer') %>
+        </div>
+        </div>
+    </div> 
+<%- include('../partials/footer') %>
