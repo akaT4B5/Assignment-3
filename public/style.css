@@ -1,13 +1,31 @@
-/* --- General Body Styling --- */
+/* =========================================
+   1. GLOBAL RESET & LAYOUT (Fixes Footer)
+   ========================================= */
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Arial, sans-serif;
     background-color: #fef5f5; /* Light pink background */
     margin: 0;
     padding: 0;
-    padding-bottom: 60px; /* Space for the fixed footer */
+
+    /* FLEXBOX TRICK: Forces body to be at least the full screen height */
+    min-height: 100vh; 
+    display: flex;
+    flex-direction: column;
 }
 
-/* --- Header Styling --- */
+/* This tells the main content to grow and push the footer down */
+main, .home-container, .sessions-page-container, .container {
+    flex: 1;
+}
+
+
+/* =========================================
+   2. HEADER STYLING
+   ========================================= */
 header {
     display: flex;
     justify-content: space-between;
@@ -20,26 +38,31 @@ header {
 .logo-title {
     font-size: 24px;
     font-weight: bold;
+    color: #333;
 }
 
 header img {
     height: 50px; /* Adjust logo size */
+    border-radius: 5px;
 }
 
-/* --- Footer Styling --- */
+
+/* =========================================
+   3. FOOTER STYLING
+   ========================================= */
 footer {
     background-color: #f7a0a0; /* Same as header */
     border-top: 2px solid #e68080;
     text-align: center;
     padding: 20px;
-    
-    /* This makes the footer stick to the bottom */
-    position: fixed;
-    bottom: 0;
     width: 100%;
+    margin-top: 40px; /* Ensures space between content and footer */
 }
 
-/* --- Home Page Specifics --- */
+
+/* =========================================
+   4. HOME PAGE (Splash Page)
+   ========================================= */
 .home-container {
     text-align: center;
     padding: 40px;
@@ -55,11 +78,12 @@ footer {
     display: flex;
     justify-content: center;
     gap: 30px; /* Space between cards */
+    flex-wrap: wrap; /* Allows wrapping on small screens */
 }
 
 .card {
     background-color: #ffffff;
-    border-radius: 20px; /* Rounded corners */
+    border-radius: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     
     /* Sizing */
@@ -82,7 +106,114 @@ footer {
 }
 
 .card:hover {
-    /* Make cards pop on hover */
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(255, 0, 0, 0.441);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    background-color: #fff0f0; /* Slight pink tint on hover */
+}
+
+
+/* =========================================
+   5. SESSIONS PAGE (2-Column Layout)
+   ========================================= */
+.sessions-page-container {
+    display: flex; 
+    justify-content: space-around;
+    padding: 40px 20px;
+    align-items: flex-start; 
+    max-width: 1200px;
+    margin: 0 auto; /* Centers the whole container */
+}
+
+/* --- Left Column (Button) --- */
+.sessions-left-column {
+    flex-basis: 30%;
+    text-align: center;
+}
+
+.sessions-left-column h2 {
+    font-size: 36px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+#add-session-btn {
+    margin: 20px auto;
+    height: 120px;
+    width: 100%; /* Fills the column width */
+    max-width: 250px;
+    background-color: #fff;
+    border: 2px solid #f7a0a0;
+}
+
+/* --- Right Column (The Table Box) --- */
+.sessions-right-column {
+    flex-basis: 65%;
+}
+
+/* The Solid Non-Movable Box */
+.scrollable-table-container {
+    height: 400px; /* Fixed height = solid box */
+    overflow-y: auto; /* Enables scrolling inside */
+    
+    background-color: #fff;
+    border: 2px solid #ddd; 
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+/* Table Styling */
+.session-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.session-table th,
+.session-table td {
+    border-bottom: 1px solid #eee;
+    padding: 15px;
+    text-align: left;
+}
+
+/* Sticky Header (Keeps titles visible while scrolling) */
+.session-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f7a0a0;
+    color: #333;
+    z-index: 1;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.session-table tr:hover {
+    background-color: #fdfdfd;
+}
+
+
+/* =========================================
+   6. BUTTONS (Edit / Delete)
+   ========================================= */
+.btn-edit, .btn-delete {
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: white;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.btn-edit {
+    background-color: #007bff; /* Blue */
+}
+
+.btn-edit:hover {
+    background-color: #0056b3;
+}
+
+.btn-delete {
+    background-color: #dc3545; /* Red */
+}
+
+.btn-delete:hover {
+    background-color: #a71d2a;
 }
