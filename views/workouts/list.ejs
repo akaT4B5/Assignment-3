@@ -1,21 +1,21 @@
 <%- include('../partials/header') %>
 
 <div class="sessions-page-container">
-
+<!-- Left Column: Navigation & Add Session -->
     <div class="sessions-left-column">
         <h2>Sessions</h2>
-        
+        <!-- Add Session Button -->
         <a href="/sessions/add" class="card" id="add-session-btn">
             Add Session
         </a>
-
+<!-- Back to Home Button -->
         <a href="/" class="btn-back-home">
             &larr; Back to Home
         </a>
     </div>
-
+<!-- Right Column: Sessions Table -->
     <div class="sessions-right-column">
-        
+        <!-- Sessions Table -->
         <div class="scrollable-table-container">
             <table class="session-table">
                 <thead>
@@ -26,30 +26,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% if (sessions.length > 0) { %>
-                        <% sessions.forEach(session => { %>
+                    <% if (sessions.length > 0) { %> <!-- Check if there are sessions -->
+                        <% sessions.forEach(session => { %> <!-- Loop through each session -->
                             <tr>
-                                <td><%= new Date(session.date).toLocaleDateString() %></td>
+                                <td><%= new Date(session.date).toLocaleDateString() %></td> <!-- Format date -->
                                 
-                                <td><strong><%= session.focus %></strong></td>
-                                
+                                <td><strong><%= session.focus %></strong></td> <!-- Session focus -->
+                                <!-- View Details with Expandable Section -->
                                 <td>
                                     <details>
                                         <summary style="cursor: pointer; color: #007bff;">Show Workout</summary>
                                         
                                         <ul style="text-align: left; margin-top: 10px; font-size: 0.9em;">
-                                            <% session.exercises.forEach(ex => { %>
+                                            <% session.exercises.forEach(ex => { %> <!-- Loop through exercises -->
                                                 <li style="margin-bottom: 5px;">
-                                                    <strong><%= ex.name %>:</strong>
-                                                    <% if(ex.type === 'strength') { %>
-                                                        <%= ex.sets %> x <%= ex.reps %> @ <%= ex.weight %>lbs
-                                                    <% } else { %>
-                                                        <%= ex.distance %>km in <%= ex.duration %> mins
+                                                    <strong><%= ex.name %>:</strong> <!-- Exercise name -->
+                                                    <% if(ex.type === 'strength') { %> <!-- Strength exercise format -->
+                                                        <%= ex.sets %> x <%= ex.reps %> @ <%= ex.weight %>lbs <!-- Strength format -->
+                                                    <% } else { %> <!-- Cardio exercise format -->
+                                                        <%= ex.distance %>km in <%= ex.duration %> mins <!-- Cardio format -->
                                                     <% } %>
                                                 </li>
                                             <% }) %>
                                         </ul>
-                                        
+                                        <!-- Edit and Delete Buttons -->
                                         <div style="margin-top: 15px;">
                                             <a href="/sessions/edit/<%= session._id %>" class="btn-submit" style="padding: 5px 10px; font-size: 12px; text-decoration: none; display: inline-block; width: auto; margin-right: 5px;">Edit</a>
                                             

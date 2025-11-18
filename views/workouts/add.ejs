@@ -1,9 +1,9 @@
 <%- include('../partials/header') %>
-
+<!-- Add Session View -->
 <main class="container">
     <div class="form-container">
         <h2>Log a New Session</h2>
-        
+        <!-- Form to add a new workout session -->
         <form method="POST" action="/sessions/add">
             
             <div class="session-meta" style="display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;">
@@ -19,30 +19,33 @@
 
             <h3>Exercises</h3>
             <div id="exercises-container">
-                </div>
-
+            </div>
+<!-- Add Exercise Button -->
             <button type="button" id="add-exercise-btn" style="background-color: #6c757d; color: white; padding: 10px; border: none; border-radius: 5px; margin-bottom: 20px; cursor: pointer; width: 100%;">
                 + Add Another Exercise
             </button>
 
             <hr>
-            
+            <!-- Submit and Cancel Buttons -->
             <button type="submit" class="btn-submit">Save Session & Finish</button>
             <a href="/sessions" class="btn-cancel">Cancel (Don't Save)</a>
         </form>
     </div>
 </main>
-
+<!-- JavaScript to handle dynamic exercise rows -->
 <script>
+    // Cache DOM references for the container and add button.
     const container = document.getElementById('exercises-container');
     const addBtn = document.getElementById('add-exercise-btn');
 
-    // 1. Add a new row
+    // Generates a new HTML block for an exercise and appends it to the form.
     function addRow() {
         const div = document.createElement('div');
         div.className = 'exercise-row';
+        // Applies inline styling to frame the row as a distinct card.
         div.style.cssText = "background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ddd; position: relative;";
         
+        // Inject HTML structure. 'names[]' syntax allows Express to parse these as arrays.
         div.innerHTML = `
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <h4 style="margin:0; color: #777;">Exercise Details</h4>
@@ -79,54 +82,49 @@
         container.appendChild(div);
     }
 
-    // 2. Remove a row
+    // Finds the closest parent container with class 'exercise-row' and deletes it.
     function removeRow(btn) {
         btn.closest('.exercise-row').remove();
     }
 
-    // 3. Toggle Logic (The Fix)
+    // Handles logic for switching between Strength and Cardio inputs.
     function toggleFields(selectElement) {
+        // Identify the specific row being modified.
         const row = selectElement.closest('.exercise-row');
         const strengthGroup = row.querySelector('.strength-fields');
         const cardioGroup = row.querySelector('.cardio-fields');
 
         if (selectElement.value === 'cardio') {
-            // 1. Visuals
+            // SWITCH TO CARDIO
+            // Update Visibility
             strengthGroup.classList.add('hidden');
             cardioGroup.classList.remove('hidden');
 
-            // 2. Data Management (Switching to Cardio)
-            
-            // Disable Strength Real Inputs
+            // Disable ALL Strength inputs (Real + Hidden). Disabled inputs are not sent to server.
             strengthGroup.querySelectorAll('input:not([type="hidden"])').forEach(el => el.disabled = true);
-            // Disable Cardio Dummy Inputs (zeros) inside Strength div
             strengthGroup.querySelectorAll('input[type="hidden"]').forEach(el => el.disabled = true);
 
-            // Enable Cardio Real Inputs
+            // Enable ALL Cardio inputs (Real + Hidden).
             cardioGroup.querySelectorAll('input:not([type="hidden"])').forEach(el => el.disabled = false);
-            // Enable Strength Dummy Inputs (zeros) inside Cardio div
             cardioGroup.querySelectorAll('input[type="hidden"]').forEach(el => el.disabled = false);
 
         } else {
-            // 1. Visuals
+            // SWITCH TO STRENGTH
+            // Update Visibility
             cardioGroup.classList.add('hidden');
             strengthGroup.classList.remove('hidden');
 
-            // 2. Data Management (Switching back to Strength)
-
-            // Enable Strength Real Inputs
+            // Enable Strength inputs.
             strengthGroup.querySelectorAll('input:not([type="hidden"])').forEach(el => el.disabled = false);
-            // Enable Cardio Dummy Inputs (zeros) inside Strength div
             strengthGroup.querySelectorAll('input[type="hidden"]').forEach(el => el.disabled = false);
 
-            // Disable Cardio Real Inputs
+            // Disable Cardio inputs.
             cardioGroup.querySelectorAll('input:not([type="hidden"])').forEach(el => el.disabled = true);
-            // Disable Strength Dummy Inputs (zeros) inside Cardio div
             cardioGroup.querySelectorAll('input[type="hidden"]').forEach(el => el.disabled = true);
         }
     }
 
-    // Initialize one row
+    // Add listener to button and create one default row on page load.
     addBtn.addEventListener('click', addRow);
     addRow(); 
 </script>

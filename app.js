@@ -1,33 +1,39 @@
-// --- 1. Imports ---
+// Imports the Express framework to build the web server.
 const express = require('express');
+// Imports Mongoose to manage MongoDB interactions.
 const mongoose = require('mongoose');
+// Imports Path to handle file path directories correctly across OS.
 const path = require('path');
-// Load environment variables from .env file
+// Loads environment variables from the .env file (e.g., DB credentials).
 require('dotenv').config(); 
 
-// Import the router for the sessions (CRUD) logic
+// Imports the router file containing all logic for the Sessions (CRUD).
 const workoutsRouter = require('./routes/workouts');
 
-// --- 2. App Setup ---
+// Initializes the Express application.
 const app = express();
+// Sets the port to the environment variable or defaults to 3000.
 const port = process.env.PORT || 3000; 
 
-// Set EJS as the templating engine
+// Configures EJS as the view engine for rendering HTML templates.
 app.set('view engine', 'ejs');
 
-// Tell Express where to find our 'views' (EJS files)
+// Explicitly sets the directory where view files are located.
 app.set('views', path.join(__dirname, 'views'));
 
-// Tell Express to serve static files (CSS, images) from the 'public' folder
+// Serves static assets (CSS, images, JS) from the 'public' directory.
 app.use(express.static(path.join(__dirname, 'public')));
 
-// These are needed to parse form data (req.body)
+// Middleware to parse URL-encoded data (form submissions).
 app.use(express.urlencoded({ extended: true })); 
+// Middleware to parse JSON data.
 app.use(express.json());
 
 
+// Retrieves the MongoDB connection string from environment variables.
 const mongoURI = process.env.MONGO_URI;
 
+// Connects to the MongoDB Atlas cluster.
 mongoose.connect(mongoURI)
   .then(() => {
     console.log('Successfully connected to MongoDB Atlas!');
@@ -36,30 +42,26 @@ mongoose.connect(mongoURI)
     console.error('Error connecting to MongoDB:', err);
   });
 
-
-// --- 4. Routes ---
-
-
+// Renders the Home (Splash) Page.
 app.get('/', (req, res) => {
   res.render('index', { title: 'Home Page' }); 
 });
 
-// Easy Exercises Page
+// Renders the Easy Exercises visual guide page.
 app.get('/exercises', (req, res) => {
     res.render('exercises', { title: 'Easy Exercises' });
 });
 
-// Workout Templates Page (The New Route)
+// Renders the Workout Templates page.
 app.get('/templates', (req, res) => {
     res.render('templates', { title: 'Workout Templates' });
 });
 
-// Sessions (CRUD) Routes
-// Connects the /sessions URL to our workouts router file
+// Mounts the workouts router. All requests starting with /sessions go to workouts.js.
 app.use('/sessions', workoutsRouter);
 
 
-// --- 5. Start the Server ---
+// Starts the server listening on the defined port.
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

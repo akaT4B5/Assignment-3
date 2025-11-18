@@ -1,11 +1,11 @@
 <%- include('../partials/header') %>
-
+<!-- Edit Session View -->
 <main class="container">
     <div class="form-container">
         <h2>Edit Session</h2>
-        
+        <!-- Form to edit an existing workout session -->
         <form method="POST" action="/sessions/edit/<%= session._id %>">
-            
+            <!-- Session extra data -->
             <div class="session-meta" style="display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;">
                 <div class="form-group" style="flex: 1; min-width: 200px;">
                     <label for="date">Session Date:</label>
@@ -16,26 +16,26 @@
                     <input type="text" id="focus" name="focus" value="<%= session.focus %>" required>
                 </div>
             </div>
-
+<!-- Exercises List -->
             <h3>Exercises</h3>
             <div id="exercises-container">
                 </div>
-
+<!-- Add Exercise Button -->
             <button type="button" id="add-exercise-btn" style="background-color: #6c757d; color: white; padding: 10px; border: none; border-radius: 5px; margin-bottom: 20px; cursor: pointer; width: 100%;">
                 + Add Another Exercise
             </button>
 
             <hr>
-            
+            <!-- Submit and Cancel Buttons -->
             <button type="submit" class="btn-submit">Update Session</button>
             <a href="/sessions" class="btn-cancel">Cancel</a>
         </form>
     </div>
-
+<!-- Hidden textarea to pass existing exercises data to JS -->
     <textarea id="server-data-exercises" hidden><%= JSON.stringify(session.exercises) %></textarea>
 
 </main>
-
+<!-- JavaScript to handle dynamic exercise rows -->
 <script>
     const container = document.getElementById('exercises-container');
     const addBtn = document.getElementById('add-exercise-btn');
