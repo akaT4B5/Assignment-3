@@ -294,3 +294,37 @@ select {
     border-color: #ccc;
     transform: translateY(-2px); /* Little hop effect */
 }
+
+/* --- Easy Exercises Page Styling --- */
+
+/* Override the default card size for this page only */
+.exercise-card {
+    width: 350px; /* Wider to fit the diagram details */
+    height: auto; /* Let the height grow to fit the image */
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align content to top */
+}
+
+.exercise-card h3 {
+    margin-top: 0;
+    color: #f7a0a0; /* Pink to match theme */
+    font-size: 22px;
+}
+
+.exercise-card img {
+    width: 100%; /* Make image fit the card width */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Responsive: Stack them on mobile */
+@media (max-width: 768px) {
+    .exercise-card {
+        width: 100%;
+        max-width: 400px;
+    }
+}

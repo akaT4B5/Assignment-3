@@ -47,6 +47,12 @@ app.get('/', (req, res) => {
 // Now, when you visit localhost:3000/sessions, it uses routes/workouts.js
 app.use('/sessions', workoutsRouter);
 
+// --- NEW: Easy Exercises Page Route ---
+app.get('/exercises', (req, res) => {
+    res.render('exercises', { title: 'Easy Exercises' });
+});
+
+
 
 // --- 5. Start the Server ---
 app.listen(port, () => {

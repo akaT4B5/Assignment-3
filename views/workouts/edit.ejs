@@ -1,0 +1,153 @@
+<%- include('../partials/header') %>
+
+<main class="container">
+    <div class="form-container">
+        <h2>Edit Session</h2>
+        
+        <form method="POST" action="/sessions/edit/<%= session._id %>">
+            
+            <div class="session-meta" style="display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;">
+                <div class="form-group" style="flex: 1; min-width: 200px;">
+                    <label for="date">Session Date:</label>
+                    <input type="date" id="date" name="date" value="<%= new Date(session.date).toISOString().split('T')[0] %>" required>
+                </div>
+                <div class="form-group" style="flex: 1; min-width: 200px;">
+                    <label for="focus">Session Focus:</label>
+                    <input type="text" id="focus" name="focus" value="<%= session.focus %>" required>
+                </div>
+            </div>
+
+            <h3>Exercises</h3>
+            <div id="exercises-container">
+                </div>
+
+            <button type="button" id="add-exercise-btn" style="background-color: #6c757d; color: white; padding: 10px; border: none; border-radius: 5px; margin-bottom: 20px; cursor: pointer; width: 100%;">
+                + Add Another Exercise
+            </button>
+
+            <hr>
+            
+            <button type="submit" class="btn-submit">Update Session</button>
+            <a href="/sessions" class="btn-cancel">Cancel</a>
+        </form>
+    </div>
+
+    <textarea id="server-data-exercises" hidden><%= JSON.stringify(session.exercises) %></textarea>
+
+</main>
+
+<script>
+    const container = document.getElementById('exercises-container');
+    const addBtn = document.getElementById('add-exercise-btn');
+
+    // --- FUNCTION 1: Add a Row ---
+    function addRow(data = null) {
+        const div = document.createElement('div');
+        div.className = 'exercise-row';
+        div.style.cssText = "background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ddd; position: relative;";
+        
+        // Helper variables (use data if existing, otherwise blank)
+        const name = data ? data.name : '';
+        const type = data ? data.type : 'strength';
+        const sets = data ? data.sets : '';
+        const reps = data ? data.reps : '';
+        const weight = data ? data.weight : '';
+        const distance = data ? data.distance : '';
+        const duration = data ? data.duration : '';
+
+        // Create the HTML for the row
+        div.innerHTML = `
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <h4 style="margin:0; color: #777;">Exercise Details</h4>
+                <button type="button" onclick="removeRow(this)" class="btn-delete">Remove</button>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <input type="text" name="names[]" value="${name}" placeholder="Exercise Name" required style="flex: 3;">
+                
+                <select name="types[]" onchange="toggleFields(this)" style="flex: 1;">
+                    <option value="strength" ${type === 'strength' ? 'selected' : ''}>Strength</option>
+                    <option value="cardio" ${type === 'cardio' ? 'selected' : ''}>Cardio</option>
+                </select>
+            </div>
+
+            <div class="strength-fields ${type === 'cardio' ? 'hidden' : ''}" style="display: flex; gap: 10px;">
+                <input type="number" name="sets[]" value="${sets}" placeholder="Sets" style="flex: 1;" ${type === 'cardio' ? 'disabled' : ''}>
+                <input type="number" name="reps[]" value="${reps}" placeholder="Reps" style="flex: 1;" ${type === 'cardio' ? 'disabled' : ''}>
+                <input type="number" name="weights[]" value="${weight}" placeholder="Weight" style="flex: 1;" ${type === 'cardio' ? 'disabled' : ''}>
+                
+                <input type="hidden" name="distances[]" value="0" ${type === 'cardio' ? 'disabled' : ''}>
+                <input type="hidden" name="durations[]" value="0" ${type === 'cardio' ? 'disabled' : ''}>
+            </div>
+
+            <div class="cardio-fields ${type === 'strength' ? 'hidden' : ''}" style="display: flex; gap: 10px;">
+                <input type="number" name="distances[]" value="${distance}" placeholder="Dist" style="flex: 1;" ${type === 'strength' ? 'disabled' : ''}>
+                <input type="number" name="durations[]" value="${duration}" placeholder="Time" style="flex: 1;" ${type === 'strength' ? 'disabled' : ''}>
+                
+                <input type="hidden" name="sets[]" value="0" ${type === 'strength' ? 'disabled' : ''}>
+                <input type="hidden" name="reps[]" value="0" ${type === 'strength' ? 'disabled' : ''}>
+                <input type="hidden" name="weights[]" value="0" ${type === 'strength' ? 'disabled' : ''}>
+            </div>
+        `;
+        container.appendChild(div);
+    } // End addRow
+
+    // --- FUNCTION 2: Remove a Row ---
+    function removeRow(btn) {
+        btn.closest('.exercise-row').remove();
+    } // End removeRow
+
+    // --- FUNCTION 3: Toggle Strength/Cardio ---
+    function toggleFields(selectElement) {
+        const row = selectElement.closest('.exercise-row');
+        const strengthGroup = row.querySelector('.strength-fields');
+        const cardioGroup = row.querySelector('.cardio-fields');
+
+        // Helper to enable/disable all inputs in a container
+        const setDisabled = (container, isDisabled) => {
+            container.querySelectorAll('input').forEach(input => input.disabled = isDisabled);
+        };
+
+        if (selectElement.value === 'cardio') {
+            // Show Cardio, Hide Strength
+            strengthGroup.classList.add('hidden');
+            cardioGroup.classList.remove('hidden');
+            
+            // Disable Strength inputs (so they don't submit), Enable Cardio
+            setDisabled(strengthGroup, true);
+            setDisabled(cardioGroup, false);
+        } else {
+            // Show Strength, Hide Cardio
+            cardioGroup.classList.add('hidden');
+            strengthGroup.classList.remove('hidden');
+
+            // Disable Cardio inputs, Enable Strength
+            setDisabled(cardioGroup, true);
+            setDisabled(strengthGroup, false);
+        }
+    } // End toggleFields
+
+    // --- INITIALIZATION ---
+    addBtn.addEventListener('click', () => addRow());
+
+    // Read the data from the hidden textarea
+    const dataRaw = document.getElementById('server-data-exercises').value;
+    let existingExercises = [];
+
+    if (dataRaw) {
+        try {
+            existingExercises = JSON.parse(dataRaw);
+        } catch (e) {
+            console.error("Error parsing exercises", e);
+        }
+    }
+
+    // Populate the form
+    if (existingExercises && existingExercises.length > 0) {
+        existingExercises.forEach(ex => addRow(ex));
+    } else {
+        addRow(); // If no exercises, show 1 empty row
+    }
+</script>
+
+<%- include('../partials/footer') %>
