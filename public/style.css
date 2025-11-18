@@ -328,3 +328,85 @@ select {
         max-width: 400px;
     }
 }
+
+/* --- Template Page Styling --- */
+
+/* Inherit the width logic from exercise-card but keep text aligned left */
+.template-card {
+    width: 350px;
+    height: auto; /* Allow it to grow with the list */
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left; /* Align text to left for better reading */
+}
+
+.template-card h3 {
+    text-align: center; /* Keep title centered */
+    color: #f7a0a0;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.template-desc {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+    font-size: 14px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* The List Styling */
+.workout-list {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+.workout-list li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #f0f0f0; /* Subtle separator line */
+    color: #555;
+    font-size: 15px;
+}
+
+.workout-list li:last-child {
+    border-bottom: none;
+}
+
+/* Responsive fix */
+@media (max-width: 768px) {
+    .template-card {
+        width: 100%;
+    }
+}
+
+/* --- Info Blurb (Fake Button Look) --- */
+.info-blurb {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: 2px solid #f7a0a0;
+    
+    /* Sizing and Spacing */
+    max-width: 800px;
+    margin: 50px auto 0 auto;
+    
+    /* UPDATED PADDING: Top/Sides are 30px, Bottom is reduced to 20px */
+    padding: 30px 30px 20px 30px;
+    
+    /* Text Styling */
+    text-align: center;
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+/* NEW RULE: Removes the default gap below the text */
+.info-blurb p {
+    margin: 0;
+}

@@ -2,12 +2,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-// 'dotenv' is used to read the .env file and load it into process.env
+// Load environment variables from .env file
 require('dotenv').config(); 
 
-
+// Import the router for the sessions (CRUD) logic
 const workoutsRouter = require('./routes/workouts');
-
 
 // --- 2. App Setup ---
 const app = express();
@@ -17,12 +16,12 @@ const port = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
 
 // Tell Express where to find our 'views' (EJS files)
-// This fixes the "Failed to lookup view" error by being specific about the path
 app.set('views', path.join(__dirname, 'views'));
 
+// Tell Express to serve static files (CSS, images) from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// These are needed to parse form data (for when we add/edit sessions later)
+// These are needed to parse form data (req.body)
 app.use(express.urlencoded({ extended: true })); 
 app.use(express.json());
 
@@ -40,18 +39,24 @@ mongoose.connect(mongoURI)
 
 // --- 4. Routes ---
 
+
 app.get('/', (req, res) => {
   res.render('index', { title: 'Home Page' }); 
 });
 
-// Now, when you visit localhost:3000/sessions, it uses routes/workouts.js
-app.use('/sessions', workoutsRouter);
-
-// --- NEW: Easy Exercises Page Route ---
+// Easy Exercises Page
 app.get('/exercises', (req, res) => {
     res.render('exercises', { title: 'Easy Exercises' });
 });
 
+// Workout Templates Page (The New Route)
+app.get('/templates', (req, res) => {
+    res.render('templates', { title: 'Workout Templates' });
+});
+
+// Sessions (CRUD) Routes
+// Connects the /sessions URL to our workouts router file
+app.use('/sessions', workoutsRouter);
 
 
 // --- 5. Start the Server ---

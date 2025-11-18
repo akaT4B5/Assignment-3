@@ -4,29 +4,26 @@ const router = express.Router();
 // Import the controller that handles all the logic
 const workoutsController = require('../controllers/workouts');
 
+// --- READ (List) ---
 // GET /sessions 
-// Shows the list of all workout sessions
 router.get('/', workoutsController.getWorkouts);
 
-// GET /sessions/add 
-// Displays the "Add Session" form
+// --- CREATE (Add) ---
+// GET /sessions/add (Show Form)
 router.get('/add', workoutsController.displayAddPage);
 
-// POST /sessions/add 
-// Handles the form submission and saves the new session to MongoDB
+// POST /sessions/add (Save Data)
 router.post('/add', workoutsController.processAddPage);
 
-// GET /sessions/delete/:id
-// Deletes a specific session based on its ID
-router.get('/delete/:id', workoutsController.deleteSession);
-
-
-// ... existing routes ...
-
-// GET /sessions/edit/:id (Show the form with data)
+// --- UPDATE (Edit) ---
+// GET /sessions/edit/:id (Show Form with Data)
 router.get('/edit/:id', workoutsController.displayEditPage);
 
-// POST /sessions/edit/:id (Save the updates)
+// POST /sessions/edit/:id (Save Updates)
 router.post('/edit/:id', workoutsController.processEditPage);
+
+// --- DELETE ---
+// GET /sessions/delete/:id
+router.get('/delete/:id', workoutsController.deleteSession);
 
 module.exports = router;
