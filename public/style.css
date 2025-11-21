@@ -1,6 +1,4 @@
-/* =========================================
-   1. GLOBAL RESET & LAYOUT
-   ========================================= */
+/*Global Styles and Resets */
 
 /* Includes padding and border in the element's total width and height calculation. */
 * {
@@ -35,9 +33,7 @@ main, .home-container, .sessions-page-container, .container {
 }
 
 
-/* =========================================
-   2. HEADER STYLING
-   ========================================= */
+/* Header */
 header {
     /* Aligns the Logo and User Image to opposite ends using space-between. */
     display: flex;
@@ -60,9 +56,7 @@ header img {
 }
 
 
-/* =========================================
-   3. FOOTER STYLING
-   ========================================= */
+/* Footer */
 footer {
     background-color: #f7a0a0;
     border-top: 2px solid #e68080;
@@ -73,9 +67,7 @@ footer {
 }
 
 
-/* =========================================
-   4. HOME PAGE (Splash Page)
-   ========================================= */
+/* Splash page (homepage) */
 .home-container {
     text-align: center;
     padding: 40px;
@@ -120,9 +112,7 @@ footer {
 }
 
 
-/* =========================================
-   5. SESSIONS PAGE (2-Column Layout)
-   ========================================= */
+/* Sessions (2 columns) */
 .sessions-page-container {
     /* Creates the side-by-side layout for controls and the list. */
     display: flex; 
@@ -192,9 +182,7 @@ footer {
 }
 
 
-/* =========================================
-   6. FORM STYLING (Add/Edit Page)
-   ========================================= */
+/* Form */
 .container {
     padding: 20px;
     display: flex;
@@ -236,9 +224,7 @@ select {
 }
 
 
-/* =========================================
-   7. BUTTONS
-   ========================================= */
+/* Buttons */
 /* Primary Action Button (Green) */
 .btn-submit {
     background-color: #28a745; 
@@ -307,9 +293,7 @@ select {
 }
 
 
-/* =========================================
-   8. EASY EXERCISES PAGE
-   ========================================= */
+/* Exercises page */
 
 /* Overrides the default card dimensions to accommodate large vertical images. */
 .exercise-card {
@@ -345,9 +329,7 @@ select {
 }
 
 
-/* =========================================
-   9. TEMPLATE PAGE STYLING
-   ========================================= */
+/* Template page */
 
 /* Inherits basic width logic from exercise cards but aligns text to the left. */
 .template-card {
@@ -404,9 +386,7 @@ select {
 }
 
 
-/* =========================================
-   10. INFO BLURB (Home Page)
-   ========================================= */
+/* Homepage info section */
 /* Styles the info text to look like a large, static card/button. */
 .info-blurb {
     background-color: #ffffff;
